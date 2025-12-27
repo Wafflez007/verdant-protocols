@@ -10,7 +10,7 @@ export function scrubTile(centerX: number, centerY: number) {
   // FIX: Increased drain from 0.1 to 0.5
   // Since this runs at 60FPS, 0.5 = 30 energy/sec. 
   // This balances against the +10 energy/sec recharge in simulation.ts.
-  gameState.sprayEnergy = Math.max(0, gameState.sprayEnergy - 0.5);
+  gameState.sprayEnergy = Math.max(0, gameState.sprayEnergy - 0.1);
   
   // --- NEW: DYNAMIC STATS BASED ON TECH ---
   let radius = 3;
