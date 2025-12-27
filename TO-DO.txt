@@ -1,0 +1,11 @@
+DONE 
+- BGM
+- timer
+- spray sound
+- custom cursor
+- random event
+- spray cooldown
+- add new tech
+- objective
+
+
