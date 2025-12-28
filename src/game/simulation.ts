@@ -72,7 +72,7 @@ export function startSimulation() {
 
       // BIOMASS INCOME
       const metrics = calculateMetrics();
-      const income = Math.floor(metrics.biodiversityScore / 10);
+      const income = Math.floor(metrics.biodiversityScore / 512);
       
       if (metrics.biodiversityScore > 0) {
          gameState.biomass += Math.max(1, income);
