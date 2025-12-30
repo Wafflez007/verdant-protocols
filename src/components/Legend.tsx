@@ -20,7 +20,7 @@ export default function Legend() {
 
       {/* THE LEGEND PANEL */}
       {isOpen && (
-        <div style={styles.panel}>
+        <div style={styles.panel} className="legend-panel">
           <div style={styles.header}>
             <h3 style={styles.heading}>ECO-DATABASE</h3>
             <span style={styles.version}>v2.0</span>
@@ -93,9 +93,10 @@ const styles: Record<string, React.CSSProperties> = {
     zIndex: 80, // Slightly below TechTree/StatusPanel
     display: "flex",
     flexDirection: "column-reverse", 
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     gap: "12px",
     fontFamily: "'Inter', sans-serif",
+    maxWidth: "calc(100vw - 40px)", // Responsive width
   },
   toggleButton: {
     border: "1px solid",
@@ -112,6 +113,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   panel: {
     width: "240px",
+    maxWidth: "100%",
+    maxHeight: "calc(100vh - 430px)", // Match StatusPanel spacing with margin buffer
+    minHeight: "200px",
     backgroundColor: "rgba(17, 24, 39, 0.95)", // Matching dark theme
     backdropFilter: "blur(16px)",
     border: "1px solid #374151",
@@ -122,6 +126,7 @@ const styles: Record<string, React.CSSProperties> = {
     animation: "slide-up 0.2s ease-out",
     display: "flex",
     flexDirection: "column",
+    overflowY: "auto",
   },
   header: {
     display: "flex",
@@ -147,7 +152,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     gap: "12px",
-    maxHeight: "400px",
+    flex: 1,
     overflowY: "auto",
     paddingRight: "4px", // For scrollbar
   },

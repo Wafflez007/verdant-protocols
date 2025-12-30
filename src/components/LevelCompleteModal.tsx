@@ -7,11 +7,12 @@ interface Props {
   nextLevelIndex: number;
   onClose: () => void;
   isGameOver?: boolean;
+  isGameWon?: boolean; // Add this prop
 }
 
-export default function LevelCompleteModal({ nextLevelIndex, onClose, isGameOver }: Props) {
+export default function LevelCompleteModal({ nextLevelIndex, onClose, isGameOver, isGameWon }: Props) {
   const nextLevel = LEVELS[nextLevelIndex];
-  const isFinalWin = !nextLevel;
+  const isFinalWin = isGameWon || !nextLevel; // Use isGameWon flag
 
   const handleNext = () => {
   if (isGameOver) {
@@ -74,8 +75,10 @@ export default function LevelCompleteModal({ nextLevelIndex, onClose, isGameOver
         {/* Content */}
         <div style={styles.content}>
           <p style={styles.message}>
-            Ecological integrity restored to 100%. <br/>
-            Biomass synthesis efficient.
+            {isFinalWin 
+              ? "All ecosystems restored! You have saved the planet. Victory achieved."
+              : "Ecological integrity restored to 100%. Biomass synthesis efficient."
+            }
           </p>
 
           {!isFinalWin && (

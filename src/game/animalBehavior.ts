@@ -4,7 +4,8 @@ import { Animal } from "./types";
 
 // Helper: Check if a coordinate is safe (inside grid AND not toxic)
 function isValidMove(x: number, y: number): boolean {
-  if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return false;
+  const gridSize = gameState.grid.length; // Dynamic grid size
+  if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) return false;
   const tile = gameState.grid[y][x];
   return tile.biome !== "toxic"; // Animals refuse to enter toxic tiles
 }

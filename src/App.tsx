@@ -11,20 +11,32 @@ function App() {
   const [showLevelModal, setShowLevelModal] = useState(false);
   const [nextLevelIdx, setNextLevelIdx] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameWon, setIsGameWon] = useState(false);
 
   // LISTEN FOR GAME EVENTS
   useEffect(() => {
     const handleLevelComplete = (e: any) => {
       if (e.detail.isGameOver) {
         setIsGameOver(true);
+        setIsGameWon(false);
+        setShowLevelModal(true);
+        return;
+      }
+      if (e.detail.isGameWon) {
+        setIsGameWon(true);
+        setIsGameOver(false);
+        setNextLevelIdx(e.detail.nextLevelIndex);
         setShowLevelModal(true);
         return;
       }
       if (e.detail.hasNextLevel) {
         setNextLevelIdx(e.detail.nextLevelIndex);
+        setIsGameOver(false);
+        setIsGameWon(false);
         setShowLevelModal(true);
       } else {
         setNextLevelIdx(-1); // Final win
+        setIsGameWon(true);
         setShowLevelModal(true);
       }
     };
@@ -98,6 +110,7 @@ function App() {
         <LevelCompleteModal 
           nextLevelIndex={nextLevelIdx} 
           isGameOver={isGameOver}
+          isGameWon={isGameWon}
           onClose={() => setShowLevelModal(false)} 
         />
       )}

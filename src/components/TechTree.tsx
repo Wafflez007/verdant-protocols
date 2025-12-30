@@ -38,7 +38,7 @@ export default function TechTree() {
 
   // --- MAXIMIZED VIEW ---
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="tech-tree-panel">
       <div style={styles.header}>
         <div style={styles.titleGroup}>
           <h3 style={styles.title}>RESEARCH LAB</h3>
@@ -56,7 +56,9 @@ export default function TechTree() {
       </div>
 
       <div style={styles.list}>
-        {TECH_TREE.map((tech) => {
+        {TECH_TREE
+          .filter(tech => tech.minLevel <= gameState.currentLevelIndex) // Only show techs for current level or below
+          .map((tech) => {
           const isUnlocked = hasTech(tech.id);
           const canAfford = gameState.biomass >= tech.cost;
 
@@ -165,7 +167,8 @@ const styles: Record<string, React.CSSProperties> = {
     top: "20px",
     left: "20px",
     width: "300px",
-    maxHeight: "calc(100vh - 40px)",
+    maxWidth: "calc(100vw - 40px)",
+    maxHeight: "calc(100vh - 80px)", // Responsive to viewport height
     backgroundColor: "rgba(17, 24, 39, 0.95)",
     backdropFilter: "blur(16px)",
     border: "1px solid #4b5563",
@@ -222,6 +225,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     gap: "12px",
+    flex: 1, // Take available space
     overflowY: "auto",
     paddingRight: "4px", // Make room for scrollbar
   },

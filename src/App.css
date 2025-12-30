@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+/* Responsive adjustments for UI panels */
+@media (max-height: 900px) {
+  /* For smaller vertical screens, reduce panel sizes */
+  .status-panel {
+    max-height: calc(100vh - 350px) !important;
+  }
+  .legend-panel {
+    max-height: calc(100vh - 600px) !important;
+  }
+  .tech-tree-panel {
+    max-height: calc(100vh - 100px) !important;
+  }
+}
+
+@media (max-height: 700px) {
+  /* For very small vertical screens, further reduce panel sizes */
+  .status-panel {
+    max-height: calc(100vh - 280px) !important;
+    font-size: 0.85em;
+  }
+  .legend-panel {
+    max-height: 200px !important;
+  }
+  .tech-tree-panel {
+    max-height: calc(100vh - 120px) !important;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 640px) {
+  /* For mobile screens, stack panels or hide by default */
+  .status-panel, .legend-panel, .tech-tree-panel {
+    width: calc(100vw - 40px) !important;
+    max-width: 280px;
+  }
+  .tech-tree-panel {
+    max-width: 300px;
+  }
+}

@@ -5,50 +5,57 @@ export type TechDefinition = {
   name: string;
   description: string;
   cost: number;
+  minLevel: number; // Minimum level required to unlock
 };
 
 // SORTED: Cheapest -> Most Expensive
 export const TECH_TREE: TechDefinition[] = [
-  // --- TIER 1: THE BASICS ---
+  // --- TIER 1: MAP 1 (River Valley) ---
   {
     id: "efficiency_1",
     name: "High-Pressure Nozzle",
     description: "Scrubber cleans pollution 50% faster.",
-    cost: 50 // Accessible after first failed run
+    cost: 50,
+    minLevel: 0 // Available from Map 1
   },
   {
     id: "radius_1",
     name: "Wide-Angle Spray",
     description: "Increases brush size by +1 (approx 50% larger).",
-    cost: 150 // A good goal for early game
+    cost: 150,
+    minLevel: 0 // Available from Map 1
   },
 
-  // --- TIER 2: ENERGY MANAGEMENT ---
+  // --- TIER 2: MAP 2 (Arid Wasteland) ---
   {
     id: "capacity_1",
     name: "Reserve Tank",
     description: "Doubles maximum spray energy to 200%.",
-    cost: 300 // Allows for longer bursts during emergencies
+    cost: 300,
+    minLevel: 1 // Unlocked at Map 2
   },
   {
     id: "regen_1",
     name: "Solar Capacitor",
     description: "Spray energy recharges 3x faster.",
-    cost: 500 // Very powerful, needs a mid-game price tag
+    cost: 500,
+    minLevel: 1 // Unlocked at Map 2
   },
 
-  // --- TIER 3: INDUSTRIAL TECH ---
+  // --- TIER 3: MAP 3 (Ancient Forest) ---
   {
     id: "radius_2",
     name: "Industrial Sprayer",
     description: "Maximizes brush size (Adds +2 radius).",
-    cost: 800 // Huge impact, expensive
+    cost: 800,
+    minLevel: 2 // Unlocked at Map 3
   },
   {
     id: "seeding_1",
     name: "Bio-Seed Injection",
     description: "Scrubbing barren land instantly plants grass (20% chance).",
-    cost: 1200 // Ultimate automation for beating tight timers
+    cost: 1200,
+    minLevel: 2 // Unlocked at Map 3
   }
 ];
 

@@ -1,5 +1,4 @@
 import { gameState } from "./gameState";
-import { GRID_SIZE } from "./grid";
 import { hasTech } from "./research";
 
 export function scrubTile(centerX: number, centerY: number) {
@@ -21,10 +20,12 @@ export function scrubTile(centerX: number, centerY: number) {
   if (hasTech("efficiency_1")) power *= 1.5;
   // ----------------------------------------
 
+  const gridSize = gameState.grid.length; // Dynamic grid size
+
   for (let y = centerY - radius; y <= centerY + radius; y++) {
     for (let x = centerX - radius; x <= centerX + radius; x++) {
       
-      if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) continue;
+      if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) continue;
 
       const dx = x - centerX;
       const dy = y - centerY;

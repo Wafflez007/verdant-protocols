@@ -4,7 +4,6 @@ import { gameState } from "../game/gameState";
 import { canvasToGrid } from "../game/input";
 import { scrubTile } from "../game/scrubber";
 import { startSimulation, stopSimulation } from "../game/simulation";
-import { GRID_SIZE } from "../game/grid"; 
 import { audioManager } from "../game/audio";
 
 export default function GameCanvas() {
@@ -29,7 +28,7 @@ export default function GameCanvas() {
     // We hook into the first click to start the engine.
     const startAudioEngine = () => {
       audioManager.init();
-      audioManager.startAmbience();
+      audioManager.startAmbience(gameState.currentLevelIndex);
       window.removeEventListener("click", startAudioEngine);
     };
     window.addEventListener("click", startAudioEngine);
@@ -96,15 +95,16 @@ export default function GameCanvas() {
     };
   }, []);
 
-  // FIX: Dynamic width/height based on your Grid and Tile settings
-  const canvasSize = GRID_SIZE * TILE_SIZE; 
+  // FIX: Dynamic width/height based on current grid size
+  const gridSize = gameState.grid.length;
+  const canvasSize = gridSize * TILE_SIZE; 
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
       <canvas
         ref={canvasRef}
-        width={canvasSize}   // Now 1024px
-        height={canvasSize}  // Now 1024px
+        width={canvasSize}
+        height={canvasSize}
         style={{ 
           border: "1px solid #333", 
           cursor: `url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="%2322d3ee" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="%2322d3ee"/></svg>') 12 12, crosshair`,

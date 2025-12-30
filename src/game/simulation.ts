@@ -56,6 +56,11 @@ export function startSimulation() {
         
         // GAME OVER CHECK
         if (gameState.timeRemaining <= 0) {
+           // Save current grid progress before failing
+           gameState.savedGrids[gameState.currentLevelIndex] = gameState.grid.map(row => 
+             row.map(tile => ({ ...tile }))
+           );
+           
            window.dispatchEvent(new CustomEvent("level-complete", { 
             detail: { hasNextLevel: false, isGameOver: true } 
           }));
