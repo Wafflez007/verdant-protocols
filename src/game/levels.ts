@@ -15,7 +15,7 @@ export const LEVELS: LevelConfig[] = [
     id: 0,
     name: "River Valley",
     mapType: "river",
-    goals: { biodiversity: 7000, pollution: 10 },
+    goals: { biodiversity: 5000, pollution: 10 },
     description: "A polluted river valley. Scrub the banks to restore the flow.",
     timeLimit: 120
   },
@@ -23,7 +23,7 @@ export const LEVELS: LevelConfig[] = [
     id: 1,
     name: "Arid Wasteland",
     mapType: "desert",
-    goals: { biodiversity: 9000, pollution: 5 },
+    goals: { biodiversity: 7000, pollution: 5 },
     description: "Water is scarce here. Connect the scattered oases to survive.",
     timeLimit: 120
   },
