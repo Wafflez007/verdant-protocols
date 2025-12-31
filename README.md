@@ -1,46 +1,148 @@
-# Getting Started with Create React App
+# 🌱 Verdant Protocols
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A browser-based ecological restoration game built with React and TypeScript. Transform polluted wastelands into thriving ecosystems through strategic environmental management.
 
-## Available Scripts
+## 📍 Overview
 
-In the project directory, you can run:
+Players must reduce pollution, manage water distribution, and reintroduce animal species to achieve biodiversity goals across three increasingly challenging levels. Watch nature reclaim degraded lands through dynamic biome succession as tiles evolve from toxic wastelands → barren soil → grasslands → wetlands → forests.
 
-### `npm start`
+### 🎮 What is this game about?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Transform toxic wastelands into vibrant ecosystems through strategic environmental management:
+- **Scrub pollution** from contaminated tiles to reduce toxicity
+- **Observe biome succession** as tiles naturally evolve from barren → grass → wetland → forest
+- **Manage water flow** and moisture levels to create diverse habitats
+- **Introduce wildlife** including herbivores, carnivores, and pollinators
+- **Research technologies** to unlock advanced restoration tools
+- **Complete level objectives** within time limits while maintaining pollution below thresholds
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 🛠️ Tech Stack
 
-### `npm test`
+- **Frontend Framework:** React 19 with TypeScript
+- **Styling:** CSS3 with custom animations
+- **Canvas Rendering:** HTML5 Canvas for game visuals
+- **State Management:** React Hooks (useState, useEffect)
+- **Build Tool:** Create React App with react-scripts
+- **Testing:** Jest + React Testing Library
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Quick Start & Setup
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (v16 or higher)
+- npm or yarn package manager
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd verdant-protocols
+```
 
-### `npm run eject`
+2. Install dependencies:
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Start the development server:
+```bash
+npm start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Open your browser and navigate to:
+```
+http://localhost:3000
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The app will automatically reload when you make changes to the source code.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Additional Scripts
 
-## Learn More
+- **Run tests:** `npm test` - Launches the test runner in interactive watch mode
+- **Build for production:** `npm run build` - Creates an optimized production build in the `build/` folder
+- **Eject configuration:** `npm run eject` - Removes Create React App abstraction (one-way operation)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ✨ Features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Progression System
+- **🔬 Technology Tree:** Research upgrades to unlock powerful restoration tools
+- **🗺️ Multiple Levels:** Three unique maps with distinct challenges:
+  - **River Valley:** Polluted waterway restoration
+  - **Arid Wasteland:** Desert oasis connectivity
+  - **Ancient Forest:** Dense woodland revival
+- **🎯 Level Objectives:** Meet biodiversity targets while keeping pollution below maximum thresholds
+- **🏆 Win/Loss Conditions:** Strategic resource management determines success
+
+### UI Components
+- **Status Panel:** Displays current metrics, timer, and progress
+- **Tech Tree:** Visual research interface for unlocking upgrades
+- **Legend:** Quick reference for biome types and tile states
+- **Level Complete Modal:** Shows results and next level transition
+- **Game Canvas:** Main rendering area with interactive tile grid
+
+## 📁 Project Structure
+
+```
+verdant-protocols/
+├── public/                      # Static assets
+│   ├── index.html              # HTML entry point
+│   ├── manifest.json           # PWA manifest
+│   └── robots.txt              # SEO robots file
+├── src/
+│   ├── components/             # React UI components
+│   │   ├── GameCanvas.tsx      # Main game rendering component
+│   │   ├── StatusPanel.tsx     # Metrics and timer display
+│   │   ├── TechTree.tsx        # Research tree interface
+│   │   ├── Legend.tsx          # Biome legend/reference
+│   │   ├── LevelCompleteModal.tsx   # End-of-level UI
+│   │   └── IntroductionModal.tsx    # Tutorial/intro screen
+│   │
+│   ├── game/                   # Core game logic (TypeScript)
+│   │   ├── types.ts            # Type definitions (Biome, Tile, Animal)
+│   │   ├── gameState.ts        # Central game state management
+│   │   ├── levels.ts           # Level configurations and objectives
+│   │   ├── grid.ts             # Grid initialization and utilities
+│   │   ├── simulation.ts       # Main game loop and updates
+│   │   ├── succession.ts       # Biome evolution logic
+│   │   ├── neighbors.ts        # Tile neighbor calculations
+│   │   ├── animals.ts          # Animal spawning and management
+│   │   ├── animalBehavior.ts   # AI movement and interactions
+│   │   ├── render.ts           # Canvas drawing functions
+│   │   ├── input.ts            # Mouse/keyboard input handling
+│   │   ├── scrubber.ts         # Pollution cleaning mechanic
+│   │   ├── research.ts         # Technology tree system
+│   │   ├── progression.ts      # Level advancement logic
+│   │   ├── score.ts            # Biodiversity scoring
+│   │   ├── metrics.ts          # Statistics calculation
+│   │   ├── goals.ts            # Objective checking
+│   │   ├── events.ts           # Random event system
+│   │   ├── audio.ts            # Sound and music management
+│   │   └── rewilding.ts        # Wildlife introduction logic
+│   │
+│   ├── App.tsx                 # Root application component
+│   ├── App.css                 # Application styles
+│   ├── index.tsx               # React entry point
+│   ├── index.css               # Global styles
+│   ├── react-app-env.d.ts      # TypeScript declarations
+│   ├── setupTests.ts           # Test configuration
+│   ├── reportWebVitals.ts      # Performance monitoring
+│   └── App.test.tsx            # Application tests
+│
+├── package.json                # Dependencies and scripts
+├── tsconfig.json               # TypeScript configuration
+├── README.md                   # Project documentation
+└── TO-DO.txt                   # Development task list
+```
+
+### Key Architecture Patterns
+
+- **Component-Based UI:** React components for modular interface elements
+- **Separation of Concerns:** Game logic isolated in `game/` directory
+- **Event-Driven Communication:** Custom events for level completion and state changes
+- **Canvas Rendering:** Direct canvas manipulation for performant tile rendering
+- **Modular Game Systems:** Each mechanic (animals, biomes, research) in separate modules
+
+---
+
+Built with ❤️ using React and TypeScript
