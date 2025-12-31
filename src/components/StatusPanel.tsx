@@ -147,6 +147,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "'Inter', monospace", // Monospace for numbers
     zIndex: 90,
     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.5)",
+    boxSizing: "border-box",
   },
   criticalOverlay: {
     position: "absolute",
@@ -225,6 +226,8 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "flex-end",
     marginBottom: "4px",
+    width: "100%",
+    boxSizing: "border-box",
   },
   goalTitle: {
     fontSize: "0.75rem",
