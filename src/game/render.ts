@@ -1,5 +1,4 @@
 import { gameState } from "./gameState";
-import { Biome } from "./types"; // Ensure Biome is imported if used, otherwise remove
 
 export const TILE_SIZE = 16; 
 
