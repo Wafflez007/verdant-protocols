@@ -149,14 +149,21 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.5)",
     boxSizing: "border-box",
   },
-  criticalOverlay: {
-    position: "absolute",
-    inset: 0,
-    borderRadius: "8px",
-    border: "2px solid #ef4444",
-    animation: "pulse-red 1s infinite",
-    pointerEvents: "none",
-  },
+criticalOverlay: {
+  position: "sticky", // Change from absolute to sticky
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  margin: "-16px", // Offset the padding of the parent container
+  height: "calc(100% + 32px)", // Ensure it covers the full height
+  width: "calc(100% + 32px)", 
+  borderRadius: "8px",
+  border: "2px solid #ef4444",
+  animation: "pulse-red 1s infinite",
+  pointerEvents: "none",
+  zIndex: 100, // Keep it above everything
+},
   sectionHeader: {
     fontSize: "0.65rem",
     textTransform: "uppercase",
