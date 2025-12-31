@@ -7,7 +7,7 @@ import { LEVELS } from "../game/levels";
 
 export default function StatusPanel() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
-  const [, setTick] = useState(0); // Forces re-render for gameState updates
+  const [, setTick] = useState(0); // Forces re-render for external gameState
   
   const maxEnergy = hasTech("capacity_1") ? 200 : 100;
   const energyPercent = (gameState.sprayEnergy / maxEnergy) * 100;
@@ -23,12 +23,11 @@ export default function StatusPanel() {
 
   if (!metrics) return null;
 
-  // Status Logic
+  // --- LOGIC ---
   let statusMessage = "OPTIMAL";
   let statusColor = "#10b981"; 
   let isCritical = false;
 
-  // Pollutions Logic
   if (metrics.pollutionPercent > 80) {
     statusMessage = "CRITICAL FAIL";
     statusColor = "#ef4444";
@@ -38,10 +37,9 @@ export default function StatusPanel() {
     statusColor = "#f59e0b";
   }
 
-  // If a Heatwave event is active, we also treat it as a critical visual state
-  if (currentEventMessage?.includes("HEATWAVE")) {
-      isCritical = true;
-  }
+  // Visual trigger for Heatwave
+  const isHeatwave = currentEventMessage?.toUpperCase().includes("HEATWAVE");
+  if (isHeatwave) isCritical = true;
 
   const bioGoal = currentLevel.goals.biodiversity;
   const pollGoal = currentLevel.goals.pollution;
@@ -50,7 +48,8 @@ export default function StatusPanel() {
   return (
     <div style={styles.container} className="status-panel">
       
-      {/* 1. THE OVERLAY: Stays fixed to the container edges */}
+      {/* 1. THE FIXED OVERLAY */}
+      {/* This stays pinned to the edges and never scrolls */}
       {isCritical && (
         <>
           <style>{pulseKeyframes}</style>
@@ -58,8 +57,9 @@ export default function StatusPanel() {
         </>
       )}
 
-      {/* 2. THE SCROLLABLE WRAPPER: Only this part moves */}
-      <div style={styles.scrollWrapper}>
+      {/* 2. THE SCROLLABLE CONTENT */}
+      {/* This handles the 'multiple screen' requirement by scrolling if content is too tall */}
+      <div style={styles.scrollArea}>
         
         <div style={styles.sectionHeader}>SYSTEM VITALS</div>
         
@@ -72,7 +72,7 @@ export default function StatusPanel() {
             </span>
           </div>
 
-          <div style={{...styles.vitalBox, borderColor: statusColor}}>
+          <div style={{...styles.vitalBox, borderColor: statusColor, borderWidth: '1px', borderStyle: 'solid'}}>
             <span style={{...styles.vitalLabel, color: statusColor}}>INTEGRITY</span>
             <span style={{...styles.vitalValue, color: statusColor, fontSize: "0.8rem"}}>
               {statusMessage}
@@ -96,8 +96,8 @@ export default function StatusPanel() {
 
         {currentEventMessage && (
           <div style={styles.eventToast}>
-            <span style={{marginRight: '8px'}}>☀️</span>
-            {currentEventMessage.toUpperCase()}
+            <span style={{fontSize: '1.1rem'}}>☀️</span>
+            <span style={{flex: 1}}>{currentEventMessage.toUpperCase()}</span>
           </div>
         )}
 
@@ -137,17 +137,19 @@ export default function StatusPanel() {
             }} />
           </div>
         </div>
+
+        {/* Added some bottom padding to ensure content isn't cramped when scrolling */}
+        <div style={{height: '10px'}} />
       </div>
     </div>
   );
 }
 
-// Animation CSS
 const pulseKeyframes = `
   @keyframes pulse-red {
-    0% { border-color: rgba(239, 68, 68, 1); box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.5); }
-    50% { border-color: rgba(239, 68, 68, 0.2); box-shadow: inset 0 0 0px rgba(239, 68, 68, 0); }
-    100% { border-color: rgba(239, 68, 68, 1); box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.5); }
+    0% { border-color: rgba(239, 68, 68, 1); box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.4); }
+    50% { border-color: rgba(239, 68, 68, 0.3); box-shadow: inset 0 0 2px rgba(239, 68, 68, 0); }
+    100% { border-color: rgba(239, 68, 68, 1); box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.4); }
   }
 `;
 
@@ -156,61 +158,64 @@ const styles: Record<string, React.CSSProperties> = {
     position: "absolute",
     top: "20px",
     right: "20px",
-    width: "300px",
-    maxHeight: "450px", 
-    backgroundColor: "rgba(11, 17, 30, 0.95)",
-    backdropFilter: "blur(12px)",
+    width: "280px",
+    // Uses vh to remain responsive on small screens
+    maxHeight: "calc(100vh - 40px)", 
+    backgroundColor: "rgba(17, 24, 39, 0.92)",
+    backdropFilter: "blur(10px)",
     border: "1px solid #374151",
-    borderRadius: "12px",
+    borderRadius: "8px",
     zIndex: 90,
-    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.7)",
-    overflow: "hidden", // CRITICAL: This clips the scroll content but NOT the overlay
+    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
+    overflow: "hidden", // Prevents the overlay from scrolling
     display: "flex",
     flexDirection: "column",
   },
-  scrollWrapper: {
-    padding: "20px",
-    overflowY: "auto",
-    height: "100%",
-    width: "100%",
-    boxSizing: "border-box",
+  scrollArea: {
+    padding: "16px",
+    overflowY: "auto", // The actual scrolling happens here
+    flex: 1,
+    scrollbarWidth: "thin", // Visual polish for Firefox
+    scrollbarColor: "#4b5563 transparent",
   },
   criticalOverlay: {
     position: "absolute",
     inset: 0, 
-    borderRadius: "12px",
+    borderRadius: "8px",
     border: "3px solid #ef4444",
-    animation: "pulse-red 1.5s infinite ease-in-out",
-    pointerEvents: "none",
-    zIndex: 100, // Stays above the scrolling text
+    animation: "pulse-red 1.2s infinite ease-in-out",
+    pointerEvents: "none", // Allows clicks to pass through to buttons/content
+    zIndex: 100, 
   },
   sectionHeader: {
-    fontSize: "0.7rem",
+    fontSize: "0.65rem",
     textTransform: "uppercase",
-    letterSpacing: "1.5px",
+    letterSpacing: "2px",
     color: "#9ca3af",
     marginBottom: "12px",
     fontWeight: "bold",
+    opacity: 0.8,
   },
   vitalsRow: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gap: "10px",
-    marginBottom: "20px",
+    gap: "8px",
+    marginBottom: "16px",
   },
   vitalBox: {
-    backgroundColor: "rgba(0,0,0,0.4)",
-    border: "1px solid #374151",
-    padding: "10px",
-    borderRadius: "8px",
+    backgroundColor: "rgba(0,0,0,0.3)",
+    padding: "8px",
+    borderRadius: "6px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    minHeight: "50px",
   },
   vitalLabel: {
-    fontSize: "0.6rem",
-    color: "#6b7280",
-    marginBottom: "4px",
+    fontSize: "0.55rem",
+    marginBottom: "2px",
+    fontWeight: "600",
   },
   vitalValue: {
     fontFamily: "'Courier New', monospace",
@@ -218,59 +223,60 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "1.1rem",
   },
   energyWrapper: {
-    marginBottom: "15px",
+    marginBottom: "12px",
   },
   barLabelRow: {
     display: "flex",
     justifyContent: "space-between",
-    fontSize: "0.75rem",
-    color: "#e5e7eb",
-    marginBottom: "6px",
+    fontSize: "0.7rem",
+    color: "#d1d5db",
+    marginBottom: "4px",
   },
   barTrack: {
-    height: "8px",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    borderRadius: "4px",
+    height: "6px",
+    backgroundColor: "rgba(0,0,0,0.6)",
+    borderRadius: "3px",
     overflow: "hidden",
   },
   barFill: {
     height: "100%",
-    transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    borderRadius: "3px",
+    transition: "width 0.3s ease-out",
   },
   eventToast: {
-    marginTop: "10px",
-    backgroundColor: "#7f1d1d",
+    marginTop: "12px",
+    backgroundColor: "#991b1b",
     color: "#fecaca",
     border: "1px solid #ef4444",
-    padding: "12px",
-    borderRadius: "8px",
-    fontSize: "0.8rem",
+    padding: "10px",
+    borderRadius: "6px",
+    fontSize: "0.75rem",
     textAlign: "center",
-    fontWeight: "900",
+    fontWeight: "bold",
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
-    boxShadow: "0 0 10px rgba(239, 68, 68, 0.4)",
+    gap: "8px",
   },
   divider: {
     height: "1px",
     backgroundColor: "#374151",
-    margin: "20px 0",
+    margin: "16px 0",
   },
   goalContainer: {
-    marginBottom: "16px",
+    marginBottom: "12px",
   },
   goalInfo: {
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: "6px",
+    alignItems: "flex-end",
+    marginBottom: "4px",
   },
   goalTitle: {
-    fontSize: "0.8rem",
-    color: "#d1d5db",
+    fontSize: "0.75rem",
+    color: "#e5e7eb",
   },
   goalValue: {
-    fontSize: "0.75rem",
+    fontSize: "0.7rem",
     fontFamily: "'Courier New', monospace",
   }
 };
