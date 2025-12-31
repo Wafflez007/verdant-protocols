@@ -41,7 +41,7 @@ export default function StatusPanel() {
   const bioProgress = Math.min(100, (metrics.biodiversityScore / bioGoal) * 100);
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="status-panel">
       
       {/* --- SECTION 1: SYSTEM VITALS --- */}
       <div style={styles.sectionHeader}>SYSTEM VITALS</div>
@@ -137,6 +137,8 @@ const styles: Record<string, React.CSSProperties> = {
     top: "20px",
     right: "20px",
     width: "280px",
+    maxHeight: "calc(100vh - 430px)", // Leave space for Legend at bottom + 50px margin between panels
+    overflowY: "auto",
     backgroundColor: "rgba(17, 24, 39, 0.9)", // Increased opacity
     backdropFilter: "blur(12px)",
     border: "1px solid #374151",

@@ -1,5 +1,6 @@
 import React from "react";
 import { audioManager } from "../game/audio";
+import { gameState } from "../game/gameState";
 
 interface Props {
   onStart: () => void;
@@ -9,7 +10,7 @@ export default function IntroductionModal({ onStart }: Props) {
   
   const handleStart = () => {
     audioManager.init();
-    audioManager.startAmbience();
+    audioManager.startAmbience(gameState.currentLevelIndex);
     onStart();
   };
 

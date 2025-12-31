@@ -21,6 +21,7 @@ export const gameState: {
   timeRemaining: number;
   sprayEnergy: number;
   currentLevelIndex: number;
+  savedGrids: { [levelIndex: number]: Tile[][] }; // Store progress for each level
 } = {
   // Default to Level 0 map
   grid: createGrid(LEVELS[0].mapType), // Optional: Also sync map type dynamically
@@ -38,4 +39,7 @@ export const gameState: {
   
   // Start at Level 0
   currentLevelIndex: 0,
+  
+  // Saved grids for persistence
+  savedGrids: {},
 };

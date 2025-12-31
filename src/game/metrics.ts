@@ -1,6 +1,5 @@
 // game/metrics.ts
 import { gameState } from "./gameState";
-import { GRID_SIZE } from "./grid";
 
 export type Metrics = {
   // Raw Biome Counts (Needed for score.ts)
@@ -25,7 +24,7 @@ export function calculateMetrics(): Metrics {
   let forest = 0;
 
   const grid = gameState.grid;
-  const totalTiles = GRID_SIZE * GRID_SIZE;
+  const totalTiles = grid.length * grid[0].length; // Dynamic grid size
 
   // Single pass loop for performance
   for (let y = 0; y < grid.length; y++) {

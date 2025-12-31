@@ -13,15 +13,16 @@ class SoundManager {
   private isMusicPlaying: boolean = false;
   private melodyTimeout: number | null = null;
   private noteIndex = 0;
+  private currentLevelMelody: number = 0; // Track which level's melody is playing
   
-  // TEMPO: Harvest Moon is usually around 120 BPM (Marching tempo)
-  private tempo: number = 120; 
-
-  // --- MELODY: "The Village Restored" ---
-  // A cheerful C-Major tune inspired by Back to Nature
+  // --- MELODIES FOR EACH LEVEL ---
   // Format: [Frequency, Duration (beats)]
   // 0 frequency = Rest
-  private townMelody = [
+  
+  // LEVEL 0: "The Village Restored" (River Valley)
+  // A cheerful C-Major tune inspired by Harvest Moon: Back to Nature
+  // Tempo: 120 BPM (Marching tempo)
+  private melodyLevel0: [number, number][] = [
     // INTRO (Fanfare-ish)
     [523.25, 0.5], [659.25, 0.5], [783.99, 1],    // C - E - G
     [523.25, 0.5], [659.25, 0.5], [783.99, 1],    // C - E - G
@@ -48,9 +49,146 @@ class SoundManager {
     [0, 1], // Rest before loop
   ];
 
-  constructor() {
-    // Lazy init
-  }
+  // LEVEL 1: "Valley Dawn" (Arid Wasteland)
+  // A gentle, pastoral tune inspired by Stardew Valley Overture
+  // Tempo: 90 BPM (Contemplative)
+  private melodyLevel1: [number, number][] = [
+    // INTRO - Gentle awakening
+    [392.00, 2],   // G (soft start)
+    [440.00, 1],   // A
+    [493.88, 1],   // B
+    [523.25, 2],   // C (hold)
+    [0, 0.5],      // Rest
+    
+    // VERSE 1 - Morning theme
+    [659.25, 1.5], // E
+    [587.33, 0.5], // D
+    [523.25, 1],   // C
+    [587.33, 1],   // D
+    [659.25, 2],   // E (hold)
+    [0, 0.5],      // Rest
+    
+    [783.99, 1],   // G
+    [659.25, 1],   // E
+    [587.33, 1],   // D
+    [523.25, 1],   // C
+    [493.88, 2],   // B (hold)
+    [0, 0.5],      // Rest
+    
+    // VERSE 2 - Building up
+    [523.25, 1],   // C
+    [587.33, 1],   // D
+    [659.25, 1.5], // E
+    [698.46, 0.5], // F
+    [783.99, 2],   // G (hold)
+    [0, 0.5],      // Rest
+    
+    [880.00, 1],   // A
+    [783.99, 1],   // G
+    [659.25, 1],   // E
+    [587.33, 1],   // D
+    [523.25, 3],   // C (long hold)
+    [0, 1],        // Rest
+    
+    // BRIDGE - Contemplative
+    [392.00, 1],   // G (lower)
+    [440.00, 1],   // A
+    [493.88, 1],   // B
+    [523.25, 1],   // C
+    [587.33, 2],   // D (hold)
+    [523.25, 2],   // C (hold)
+    [0, 0.5],      // Rest
+    
+    // OUTRO - Settling down
+    [659.25, 1.5], // E
+    [587.33, 0.5], // D
+    [523.25, 2],   // C
+    [493.88, 1],   // B
+    [440.00, 1],   // A
+    [392.00, 3],   // G (peaceful end)
+    [0, 2],        // Long rest before loop
+  ];
+
+  // LEVEL 2: "Maple Memories" (Ancient Forest)
+  // An adventurous, nostalgic tune inspired by MapleStory Login Theme
+  // Tempo: 110 BPM (Upbeat adventure)
+  private melodyLevel2: [number, number][] = [
+    // INTRO - Iconic opening
+    [659.25, 0.5], // E
+    [783.99, 0.5], // G
+    [880.00, 1],   // A (hold)
+    [783.99, 0.5], // G
+    [659.25, 0.5], // E
+    [523.25, 1],   // C
+    [587.33, 2],   // D (hold)
+    [0, 0.5],      // Rest
+    
+    // VERSE 1 - Adventurous melody
+    [523.25, 0.5], // C
+    [587.33, 0.5], // D
+    [659.25, 0.75],// E
+    [698.46, 0.25],// F
+    [783.99, 1],   // G
+    [880.00, 1],   // A
+    [783.99, 0.5], // G
+    [659.25, 0.5], // E
+    [587.33, 1.5], // D (hold)
+    [0, 0.5],      // Rest
+    
+    // Repeat motif
+    [659.25, 0.5], // E
+    [783.99, 0.5], // G
+    [880.00, 1],   // A
+    [1046.50, 0.5],// C (high)
+    [880.00, 0.5], // A
+    [783.99, 1],   // G
+    [659.25, 2],   // E (hold)
+    [0, 0.5],      // Rest
+    
+    // BRIDGE - Nostalgic section
+    [523.25, 1],   // C
+    [659.25, 1],   // E
+    [587.33, 1],   // D
+    [523.25, 1],   // C
+    [493.88, 1.5], // B
+    [440.00, 0.5], // A
+    [493.88, 2],   // B (hold)
+    [0, 0.5],      // Rest
+    
+    // CHORUS - Uplifting
+    [783.99, 0.5], // G
+    [880.00, 0.5], // A
+    [1046.50, 1],  // C (high)
+    [880.00, 0.5], // A
+    [783.99, 0.5], // G
+    [659.25, 1],   // E
+    [783.99, 1],   // G
+    [880.00, 2],   // A (hold)
+    [0, 0.5],      // Rest
+    
+    // Building up
+    [659.25, 0.5], // E
+    [783.99, 0.5], // G
+    [880.00, 0.5], // A
+    [1046.50, 0.5],// C (high)
+    [1174.66, 1],  // D (high)
+    [1046.50, 1],  // C (high)
+    [880.00, 1],   // A
+    [783.99, 1],   // G
+    [659.25, 2],   // E (long hold)
+    [0, 1],        // Rest
+    
+    // OUTRO - Settling with hope
+    [523.25, 1],   // C
+    [587.33, 1],   // D
+    [659.25, 1.5], // E
+    [587.33, 0.5], // D
+    [523.25, 3],   // C (peaceful end)
+    [0, 2],        // Long rest before loop
+  ];
+
+  // Tempo for each level
+  private tempos = [120, 90, 110]; // Level 0: 120 BPM, Level 1: 90 BPM, Level 2: 110 BPM
 
   init() {
     if (this.ctx) return;
@@ -111,13 +249,22 @@ class SoundManager {
     this.scrubOsc = null;
   }
 
-  // --- 2. BGM: "BACK TO NATURE" STYLE ---
-  startAmbience() {
+  // --- 2. BGM: LEVEL-SPECIFIC MUSIC ---
+  startAmbience(levelIndex: number = 0) {
     if (!this.ctx) this.init();
     if (!this.ctx) return;
 
-    if (this.isMusicPlaying) return;
+    // If already playing the same level's music, don't restart
+    if (this.isMusicPlaying && this.currentLevelMelody === levelIndex) return;
+    
+    // Stop current music if playing different level
+    if (this.isMusicPlaying && this.currentLevelMelody !== levelIndex) {
+      this.stopAmbience();
+    }
+
+    this.currentLevelMelody = levelIndex;
     this.isMusicPlaying = true;
+    this.noteIndex = 0; // Reset to start of melody
     
     // Start slighty in the future to avoid glitches
     this.nextNoteTime = this.ctx.currentTime + 0.1;
@@ -144,8 +291,17 @@ class SoundManager {
   private playStep() {
     if (!this.ctx) return;
 
-    const [freq, beats] = this.townMelody[this.noteIndex];
-    const duration = (60 / this.tempo) * beats;
+    // Get the current level's melody
+    const currentMelody = this.getCurrentMelody();
+    if (!currentMelody || currentMelody.length === 0) {
+      // No melody for this level, stop playing
+      this.stopAmbience();
+      return;
+    }
+
+    const [freq, beats] = currentMelody[this.noteIndex];
+    const tempo = this.tempos[this.currentLevelMelody] || 100;
+    const duration = (60 / tempo) * beats;
     
     // --- VOICE 1: THE FLUTE (Melody) ---
     if (freq > 0) { 
@@ -191,8 +347,21 @@ class SoundManager {
     }
     
     // Advance loop
-    this.noteIndex = (this.noteIndex + 1) % this.townMelody.length;
+    const melody = this.getCurrentMelody();
+    if (melody) {
+      this.noteIndex = (this.noteIndex + 1) % melody.length;
+    }
     this.nextNoteTime += duration;
+  }
+
+  // Helper to get the current level's melody
+  private getCurrentMelody(): [number, number][] | null {
+    switch (this.currentLevelMelody) {
+      case 0: return this.melodyLevel0;
+      case 1: return this.melodyLevel1;
+      case 2: return this.melodyLevel2;
+      default: return this.melodyLevel0;
+    }
   }
 
   // --- 3. SFX: VICTORY CHIME ---
